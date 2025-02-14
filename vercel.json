@@ -1,8 +1,9 @@
 {
     "build": {
       "env": {
-        "NODE_VERSION": "17"
-      }
+        "NODE_VERSION": "16"
+      },
+      "installCommand": "npm install --legacy-peer-deps"
     }
   }
   
