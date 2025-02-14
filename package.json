@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3001",
     "build": "vite build",
     "serve": "vite preview"
   },
@@ -27,6 +27,7 @@
     "d3-scale": "^3.3.0",
     "d3-shape": "^2.1.0",
     "leva": "^0.9.9",
+    "penpal": "^6.2.2",
     "postcss": "^8.2.13",
     "postprocessing": "^6.21.4",
     "prettier": "^2.2.1",

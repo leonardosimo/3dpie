@@ -1,6 +1,6 @@
+import React from 'react'
 import { extent, max, maxIndex, min } from 'd3-array'
 import { button, buttonGroup, folder, useControls, LevaInputs } from 'leva'
-import React from 'react'
 import { palette } from './theme'
 
 // lazy global state to track whether we did the first initialization of controls
@@ -97,7 +97,7 @@ function setPrefix(prefix, value, controlValues, set) {
 const useInputControls = () => {
   const [urlSync] = React.useState(() => createUrlSync())
   const controlValuesRef = React.useRef()
-  const {
+  const [ {
     numSlices,
     title,
     titleOffset,
@@ -121,7 +121,7 @@ const useInputControls = () => {
     spinSpeed,
     showValues,
     valuesAsPercent,
-  } = useControls({
+  } , setMain]= useControls(()=> ({
     reset: button(() => {
       window.location.href = '/'
     }),
@@ -404,9 +404,9 @@ const useInputControls = () => {
       max: 10,
       type: LevaInputs.NUMBER,
       label: '# slices',
-      ...urlSync('n', 4),
+      ...urlSync('n', 0),
     },
-  })
+  }), [])
   React.useEffect(() => {
     if (!controlValuesRef.current) return
     setPrefix(
@@ -514,8 +514,10 @@ const useInputControls = () => {
       spinSpeed,
       showValues,
       valuesAsPercent,
+      
     },
     set,
+    setMain
   ]
 }
 export default useInputControls

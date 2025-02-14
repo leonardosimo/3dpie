@@ -28,9 +28,12 @@ const PieSlice = ({
   formatter = format('.0%'),
   showValue = true,
   valueAsPercent = true,
+  isMinPie = false,
 }) => {
   const arc = arcs[i]
   const label = datum.label
+  // console.log("color ----------->", datum?.color);
+  
   const color = datum.color ?? palette[i % palette.length]
   let xOffset = 0
   let zOffset = 0
@@ -54,13 +57,16 @@ const PieSlice = ({
   const yTextOffset = 0.125
   // glorious idea for laziness
   // const percent = (arc.endAngle - arc.startAngle) / (Math.PI * 2)
-  const percent = arc.value / totalValue
-
+  const percent = arc.data.originalValue / totalValue
+  const calculatedHeight = Math.max(
+    (1 * parseInt(format('.0%')(arc.data.originalValue / totalValue).split('%')[0])) / 100,
+    height * 0.5
+  )
   const springProps = useSpring({
     // xOffset,
     // zOffset,
-    height,
-    position: [xOffset, height + offset, zOffset],
+    calculatedHeight,
+    position: [xOffset, calculatedHeight + offset, zOffset],
     config: springConfig,
   })
 
@@ -70,10 +76,14 @@ const PieSlice = ({
   ])
 
   return (
-    <animated.group key={i} position={springProps.position}>
+    <animated.group
+      userData={{ isMinPie }}
+      key={i}
+      position={springProps.position}
+    >
       <animated.mesh
         rotation={[Math.PI / 2, 0, 0]}
-        scale={springProps.height.to((height) => [1, 1, height])}
+        scale={springProps.calculatedHeight.to((height) => [1, 1, height])}
         onClick={(evt) => {
           onClick?.(i)
           evt.stopPropagation(true)
@@ -112,7 +122,7 @@ const PieSlice = ({
             outlineColor="#000000"
             outlineOpacity={0.2}
           >
-            {valueAsPercent ? formatter(percent) : arc.value}
+            {valueAsPercent ? formatter(percent) : arc.data.originalValue}
           </Text>
         </Billboard>
       )}
@@ -130,7 +140,7 @@ const PieSlice = ({
             anchorX="center"
             anchorY="middle"
             fillOpacity={1}
-            color={showValue ? color : 'white'}
+            color={'white'}
             outlineWidth={'2.5%'}
             outlineColor="#000000"
             outlineOpacity={1}
