@@ -6,6 +6,7 @@ const listURLs = [
   "https://stats.kurax.dev"
 ];
 
+
 function useFramePie(adapter) {
   const [data, setData] = useState([])
   const prevDataRef = useRef(null)
