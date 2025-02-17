@@ -4,5 +4,20 @@
       "NODE_VERSION": "16"
     }
   },
-  "installCommand": "npm install --legacy-peer-deps"
+  "installCommand": "npm install --legacy-peer-deps",
+  "headers": [
+    {
+      "source": "/*",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "ALLOWALL"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://stats.kurax.dev http://localhost:5173;" 
+        }
+      ]
+    }
+  ]
 }
