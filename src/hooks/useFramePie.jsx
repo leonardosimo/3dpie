@@ -1,14 +1,20 @@
 import { useState, useEffect, useRef } from 'react'
 
+
+const listURLs = [
+  "http://localhost:5173",
+];
+
 function useFramePie(adapter) {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState([])
   const prevDataRef = useRef(null)
 
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.origin !== 'http://localhost:5173') return // Seguridad básica
 
-      try {
+      if (!listURLs.includes(event.origin)) return // Seguridad básica
+      try { 
+        
         const adaptedData = adapter ? adapter(event.data) : event.data
 
         // Solo actualizar el estado si los datos han cambiado

@@ -1,6 +1,6 @@
 import { ContactShadows, Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import React, { Suspense, useEffect, useState, useRef, use } from 'react'
+import React, { Suspense, useEffect, useState, useRef } from 'react'
 import Effects from './Effects'
 import Pie from './Pie'
 import Turntable from './Turntable'
@@ -22,7 +22,7 @@ function App() {
       setMain &&
       set
     ) {
-      const dataOptionPie3D = Object.values(
+      const dataOption = Object.values(
         data.optionPie3D.reduce((acc, curr) => {
           const { category, value, fill } = curr
           const normalizedCategory = category
@@ -56,7 +56,7 @@ function App() {
       //   }
       // })
 
-      return dataOptionPie3D
+      return dataOption
     }
     return data
   })
@@ -73,13 +73,16 @@ function App() {
   }, [setMain, dataOptionPie3D])
 
   useEffect(() => {
-    console.log('dataOptionPie3D ------------>', dataOptionPie3D)
-    if (!Array.isArray(dataOptionPie3D) || dataOptionPie3D.length === 0) return
+    const dataValidate =
+      dataOptionPie3D &&
+      Array.isArray(dataOptionPie3D) &&
+      dataOptionPie3D.length > 0
+    if (!dataValidate) return
     setMain({
       numSlices: dataOptionPie3D?.length ?? 0,
     })
     if (controlValues?.value1) {
-      dataOptionPie3D.forEach((optionData, idx) => {
+      dataOptionPie3D?.forEach((optionData, idx) => {
         if (optionData?.value && optionData?.fill && optionData?.category) {
           set({
             [`value${idx}`]: parseInt(optionData?.value)
