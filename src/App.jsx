@@ -64,9 +64,9 @@ function App() {
   useEffect(() => {
     setMain({
       valuesAsPercent: false,
-      cornerRadius: 20,
+      cornerRadius: 5,
       outerRadius: 200,
-      padAngle: 0.2,
+      padAngle: 0.1,
       innerRadius: 10,
       valueLabelPosition: 1,
     })
@@ -78,11 +78,32 @@ function App() {
       Array.isArray(dataOptionPie3D) &&
       dataOptionPie3D.length > 0
     if (!dataValidate) return
+
     setMain({
       numSlices: dataOptionPie3D?.length ?? 0,
     })
-    if (controlValues?.value1) {
-      dataOptionPie3D?.forEach((optionData, idx) => {
+
+    if (dataOptionPie3D?.length > 0 && controlValues?.['value' + (dataOptionPie3D?.length - 1)]) {
+      const dataTest = [
+        {
+          value: '10',
+          fill: '#1f2937',
+          category: 'test',
+        },
+        {
+          value: '10',
+          fill: '#1f2937',
+          category: 'test',
+        },
+        {
+          value: '20',
+          fill: '#f0f0f0',
+          category: 'test',
+        },
+      ]
+      console.log('data test', dataTest)
+
+      dataOptionPie3D?.map((optionData, idx) => {
         if (optionData?.value && optionData?.fill && optionData?.category) {
           set({
             [`value${idx}`]: parseInt(optionData?.value)
@@ -92,11 +113,12 @@ function App() {
             [`label${idx}`]: optionData?.category,
           })
         }
+        return optionData
       })
     }
 
     setMessage('')
-  }, [dataOptionPie3D, set, setMain, controlValues?.value1])
+  }, [dataOptionPie3D, set, setMain, controlValues])
 
   return (
     <div
