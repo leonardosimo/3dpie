@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 
 const listURLs = [
   "http://localhost:5173",
+  "https://stats.kurax.dev"
 ];
 
 function useFramePie(adapter) {
