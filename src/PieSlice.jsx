@@ -1,15 +1,42 @@
+import * as THREE from 'three'
 import {
   animated,
   config as springConfigs,
   useSpring,
 } from '@react-spring/three'
-import { Text } from '@react-three/drei'
+import { Text, shaderMaterial } from '@react-three/drei'
 import { format } from 'd3-format'
 import React from 'react'
 import Billboard from './Billboard'
 import { palette } from './theme'
+import { extend } from '@react-three/fiber'
 
 const springConfig = springConfigs.wobbly
+
+// Definimos un material personalizado
+const GlowMaterial = shaderMaterial(
+  { color: new THREE.Color('red'), glowColor: new THREE.Color('black') },
+  `
+  varying vec3 vNormal;
+  void main() {
+    vNormal = normal;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+  }
+  `,
+  `
+  varying vec3 vNormal;
+  uniform vec3 color;
+  uniform vec3 glowColor;
+
+  void main() {
+    float intensity = pow(1.0 - dot(vNormal, vec3(0, 0, 1)), 2.0);
+    vec3 glow = glowColor * intensity * 2.0;
+    gl_FragColor = vec4(color + glow, 1.0);
+  }
+  `
+)
+
+extend({ GlowMaterial })
 
 const PieSlice = ({
   i,
@@ -34,7 +61,7 @@ const PieSlice = ({
   const arc = arcs[i]
   const label = datum.label
   // console.log("color ----------->", datum?.color);
-  
+
   const color = palette[i % palette.length]
   let xOffset = 0
   let zOffset = 0
@@ -60,7 +87,11 @@ const PieSlice = ({
   // const percent = (arc.endAngle - arc.startAngle) / (Math.PI * 2)
   const percent = arc.data.originalValue / totalValue
   const calculatedHeight = Math.max(
-    (0.6 * parseInt(format('.0%')(arc.data.originalValue / totalValue).split('%')[0])) / 100,
+    (0.6 *
+      parseInt(
+        format('.0%')(arc.data.originalValue / totalValue).split('%')[0]
+      )) /
+      100,
     height * 0.5
   )
   const springProps = useSpring({
@@ -68,16 +99,38 @@ const PieSlice = ({
     // zOffset,
     height,
     calculatedHeight,
-    position: [xOffset, (isMaxPie ? (calculatedHeight - (calculatedHeight * 0.10)) : 0) + 0, zOffset ],
+    position: [
+      xOffset,
+      (isMaxPie ? calculatedHeight - calculatedHeight * 0.1 : 0) + 0,
+      zOffset,
+    ],
     config: springConfig,
   })
 
-  const extrudeGeometryArgs = React.useMemo(() => [shape, extrudeSettings], [
-    shape,
-    extrudeSettings,
-  ])
+  const extrudeGeometryArgs = React.useMemo(
+    () => [shape, extrudeSettings],
+    [shape, extrudeSettings]
+  )
 
   return (
+    <>
+    {/* <animated.group
+      userData={{ isMinPie }}
+      position={springProps.position}
+      layers={1}
+    >
+      <animated.mesh
+        rotation={[Math.PI / 2, 0, 0]}
+        scale={springProps.calculatedHeight.to((height) => [1, 1, height])}
+        receiveShadow
+      >
+        <extrudeGeometry args={extrudeGeometryArgs} />
+        <glowMaterial
+          color={color}
+          glowColor="black"
+        />
+      </animated.mesh>
+    </animated.group> */}
     <animated.group
       userData={{ isMinPie }}
       key={i}
@@ -102,7 +155,13 @@ const PieSlice = ({
           color={color}
           roughness={roughness}
           metalness={metalness}
-        />
+          />
+        {/* <glowMaterial
+          color={color}
+          glowColor="black"
+          emissive={'black'} // Añade esta línea para hacer el material más brillante
+          emissiveIntensity={5} // Ajusta la intensidad del brillo
+        /> */}
         {/* <meshBasicMaterial color={color} side={BackSide} /> */}
       </animated.mesh>
       {false && (
@@ -155,6 +214,8 @@ const PieSlice = ({
       )} */}
     </animated.group>
     
+    </>
+
   )
 }
 

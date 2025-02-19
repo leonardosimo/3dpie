@@ -7,6 +7,9 @@ import useInputControls, { pieDataFromControls } from './useInputControls'
 import { Leva } from 'leva'
 import useFramePie from './hooks/useFramePie'
 import PieLabel from './components/pieLabel'
+// import { Effects } from './Effect'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import { Effects } from './Effect'
 
 function App() {
   const orbitControlsRef = useRef()
@@ -121,12 +124,12 @@ function App() {
       />
 
       <Canvas shadows dpr={[1, 2]} camera={{ position: [4, 2, 3], fov: 20 }}>
-        <ambientLight intensity={1} />
+        <ambientLight intensity={2} />
         <spotLight
-          intensity={1}
-          angle={0.1}
+          intensity={10}
+          angle={-1}
           penumbra={1}
-          position={[10, 15, 10]}
+          position={[4, 2, 3]}
           castShadow
         />
         <Suspense fallback={null}>
@@ -134,7 +137,6 @@ function App() {
             enabled={controlValues.spinSpeed > 0}
             speed={controlValues.spinSpeed * 0.02}
           >
-            {/* <Effects /> */}
             <Pie
               // ref={pieRef}
               data={data}
@@ -152,6 +154,7 @@ function App() {
               }
             />
           </Turntable>
+          <Effects />
         </Suspense>
 
         {controlValues.environmentFile && (
@@ -193,9 +196,7 @@ function App() {
         <>
           {dataOptionPie3D?.map((optionData, idx) => {
             if (optionData?.value && optionData?.fill && optionData?.category) {
-              return (
-                <PieLabel optionData={optionData} idx={idx} />
-              )
+              return <PieLabel optionData={optionData} idx={idx} />
             }
             return null
           })}

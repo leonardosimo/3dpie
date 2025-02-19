@@ -237,10 +237,10 @@ const useInputControls = () => {
             },
             environmentFile: {
               label: 'environment',
-              value: environmentFilesMap.night,
+              value: environmentFilesMap.warehouse,
               type: LevaInputs.SELECT,
               options: environmentFilesMap,
-              ...urlSync('env', environmentFilesMap.night),
+              ...urlSync('env', environmentFilesMap.warehouse),
             },
           },
           { collapsed: true }
@@ -253,8 +253,8 @@ const useInputControls = () => {
               type: LevaInputs.NUMBER,
               max: 1,
               step: 0.05,
-              value: 1.0,
-              ...urlSync('rgh', 1.0),
+              value: 1.00,
+              ...urlSync('rgh', 1.00),
             },
             metalness: {
               label: 'metalness',
@@ -262,8 +262,8 @@ const useInputControls = () => {
               type: LevaInputs.NUMBER,
               max: 1,
               step: 0.05,
-              value: 0.1,
-              ...urlSync('met', 0.1),
+              value: 1,
+              ...urlSync('met', 1),
             },
           },
           { collapsed: true }
