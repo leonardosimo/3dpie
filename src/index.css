@@ -3,13 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-  html { 
+  html {
     @apply antialiased;
   }
 
-  html, body, #root {
+  html,
+  body,
+  #root {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
@@ -19,3 +20,22 @@
     @apply text-white bg-gray-800;
   }
 }
+
+
+.clip-path-rhombus {
+  background: transparent;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  /* filter: drop-shadow(0 0 3px white) drop-shadow(0 0 3px white); */
+}
+
+/* .clip-path-rhombus::after {
+  content: "";
+  position: absolute;
+  height: 65px;
+  width: 300px;
+  top: -2px;
+  right: -1.5px;
+  border-right: 2px solid black;
+  transform: rotate(31.8deg);
+  transform-origin: right top;
+} */

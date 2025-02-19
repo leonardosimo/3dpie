@@ -253,8 +253,8 @@ const useInputControls = () => {
               type: LevaInputs.NUMBER,
               max: 1,
               step: 0.05,
-              value: 0.2,
-              ...urlSync('rgh', 0.2),
+              value: 1.0,
+              ...urlSync('rgh', 1.0),
             },
             metalness: {
               label: 'metalness',
@@ -262,8 +262,8 @@ const useInputControls = () => {
               type: LevaInputs.NUMBER,
               max: 1,
               step: 0.05,
-              value: 0.0,
-              ...urlSync('met', 0.0),
+              value: 0.1,
+              ...urlSync('met', 0.1),
             },
           },
           { collapsed: true }
@@ -368,10 +368,10 @@ const useInputControls = () => {
           { collapsed: true }
         ),
         backgroundColor: {
-          value: '#1f2937',
+          value: '#651810',
           label: 'bg',
           type: LevaInputs.COLOR,
-          ...urlSync('bg', '#1f2937'),
+          ...urlSync('bg', '#651810'),
         },
         showValues: {
           value: true,

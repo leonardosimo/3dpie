@@ -29,12 +29,13 @@ const PieSlice = ({
   showValue = true,
   valueAsPercent = true,
   isMinPie = false,
+  isMaxPie = false,
 }) => {
   const arc = arcs[i]
   const label = datum.label
   // console.log("color ----------->", datum?.color);
   
-  const color = datum.color ?? palette[i % palette.length]
+  const color = palette[i % palette.length]
   let xOffset = 0
   let zOffset = 0
   // explode the pieces
@@ -59,14 +60,15 @@ const PieSlice = ({
   // const percent = (arc.endAngle - arc.startAngle) / (Math.PI * 2)
   const percent = arc.data.originalValue / totalValue
   const calculatedHeight = Math.max(
-    (1 * parseInt(format('.0%')(arc.data.originalValue / totalValue).split('%')[0])) / 100,
+    (0.6 * parseInt(format('.0%')(arc.data.originalValue / totalValue).split('%')[0])) / 100,
     height * 0.5
   )
   const springProps = useSpring({
     // xOffset,
     // zOffset,
+    height,
     calculatedHeight,
-    position: [xOffset, calculatedHeight + offset, zOffset],
+    position: [xOffset, (isMaxPie ? (calculatedHeight - (calculatedHeight * 0.10)) : 0) + 0, zOffset ],
     config: springConfig,
   })
 
@@ -103,7 +105,7 @@ const PieSlice = ({
         />
         {/* <meshBasicMaterial color={color} side={BackSide} /> */}
       </animated.mesh>
-      {showValue && (
+      {false && (
         <Billboard>
           <Text
             position={[xText, yTextOffset, zText]}
@@ -126,7 +128,7 @@ const PieSlice = ({
           </Text>
         </Billboard>
       )}
-      {label && (
+      {/* {label && (
         <Billboard>
           <Text
             position={[xText, yTextOffset + (showValue ? 0.15 : 0), zText]}
@@ -150,8 +152,9 @@ const PieSlice = ({
             {label}
           </Text>
         </Billboard>
-      )}
+      )} */}
     </animated.group>
+    
   )
 }
 

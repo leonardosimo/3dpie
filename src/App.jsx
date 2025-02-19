@@ -1,12 +1,12 @@
 import { ContactShadows, Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React, { Suspense, useEffect, useState, useRef } from 'react'
-import Effects from './Effects'
 import Pie from './Pie'
 import Turntable from './Turntable'
 import useInputControls, { pieDataFromControls } from './useInputControls'
 import { Leva } from 'leva'
 import useFramePie from './hooks/useFramePie'
+import PieLabel from './components/pieLabel'
 
 function App() {
   const orbitControlsRef = useRef()
@@ -14,6 +14,7 @@ function App() {
   const data = pieDataFromControls(controlValues)
 
   const [message, setMessage] = useState('Esperando datos...')
+  const [loading, setLoading] = useState(false)
 
   const dataOptionPie3D = useFramePie((data) => {
     if (
@@ -62,15 +63,17 @@ function App() {
   })
 
   useEffect(() => {
-    setMain({
-      valuesAsPercent: false,
-      cornerRadius: 5,
-      outerRadius: 200,
-      padAngle: 0.1,
-      innerRadius: 10,
-      valueLabelPosition: 1,
-    })
-  }, [setMain, dataOptionPie3D])
+    if (loading) {
+      setMain({
+        valuesAsPercent: false,
+        cornerRadius: 0.0,
+        outerRadius: 60,
+        padAngle: 0.1,
+        innerRadius: 0.0,
+        valueLabelPosition: 1,
+      })
+    }
+  }, [loading, setMain])
 
   useEffect(() => {
     const dataValidate =
@@ -83,26 +86,10 @@ function App() {
       numSlices: dataOptionPie3D?.length ?? 0,
     })
 
-    if (dataOptionPie3D?.length > 0 && controlValues?.['value' + (dataOptionPie3D?.length - 1)]) {
-      const dataTest = [
-        {
-          value: '10',
-          fill: '#1f2937',
-          category: 'test',
-        },
-        {
-          value: '10',
-          fill: '#1f2937',
-          category: 'test',
-        },
-        {
-          value: '20',
-          fill: '#f0f0f0',
-          category: 'test',
-        },
-      ]
-      console.log('data test', dataTest)
-
+    if (
+      dataOptionPie3D?.length > 0 &&
+      controlValues?.['value' + (dataOptionPie3D?.length - 1)]
+    ) {
       dataOptionPie3D?.map((optionData, idx) => {
         if (optionData?.value && optionData?.fill && optionData?.category) {
           set({
@@ -118,6 +105,7 @@ function App() {
     }
 
     setMessage('')
+    setLoading(true)
   }, [dataOptionPie3D, set, setMain, controlValues])
 
   return (
@@ -132,22 +120,23 @@ function App() {
         titleBar={{ title: 'Customize Pie' }}
       />
 
-      <Canvas shadows dpr={[1, 2]} camera={{ position: [3, 3, 4], fov: 50 }}>
-        <ambientLight intensity={controlValues.ambientLightIntensity} />
+      <Canvas shadows dpr={[1, 2]} camera={{ position: [4, 2, 3], fov: 20 }}>
+        <ambientLight intensity={1} />
         <spotLight
-          intensity={controlValues.spotLightIntensity}
+          intensity={1}
           angle={0.1}
           penumbra={1}
           position={[10, 15, 10]}
           castShadow
         />
-
         <Suspense fallback={null}>
           <Turntable
             enabled={controlValues.spinSpeed > 0}
             speed={controlValues.spinSpeed * 0.02}
           >
+            {/* <Effects /> */}
             <Pie
+              // ref={pieRef}
               data={data}
               innerRadius={controlValues.innerRadius}
               outerRadius={controlValues.outerRadius}
@@ -186,15 +175,6 @@ function App() {
           maxPolarAngle={Math.PI / 2}
           enablePan={false}
         />
-
-        {controlValues.showBloom && (
-          <Effects
-            backgroundColor={controlValues.backgroundColor}
-            bloomStrength={controlValues.bloomStrength}
-            bloomThreshold={controlValues.bloomThreshold}
-            bloomRadius={controlValues.bloomRadius}
-          />
-        )}
       </Canvas>
 
       <div
@@ -209,6 +189,18 @@ function App() {
       >
         {message}
       </div>
+      {dataOptionPie3D?.length > 0 && (
+        <>
+          {dataOptionPie3D?.map((optionData, idx) => {
+            if (optionData?.value && optionData?.fill && optionData?.category) {
+              return (
+                <PieLabel optionData={optionData} idx={idx} />
+              )
+            }
+            return null
+          })}
+        </>
+      )}
     </div>
   )
 }

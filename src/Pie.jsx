@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import PieSlice from './PieSlice'
 import { useCachedPie } from './hooks/useCachePie'
 import { sum } from 'd3-array'
@@ -27,8 +27,7 @@ const Pie = ({
   showValues,
   valuesAsPercent,
 }) => {
-
-// note we read data out to get the cached version that is in sync with our pie
+  // note we read data out to get the cached version that is in sync with our pie
   const { data, arcs, shapes, arcGenerator } = useCachedPie(
     inputData,
     innerRadius,
@@ -39,12 +38,20 @@ const Pie = ({
   if (!shapes) return null
   const totalValue = sum(arcs, (d) => {
     return d.data.originalValue
-  }) 
+  })
   const minValueIndex = data.reduce(
-    (min, item, i) => (item.value < min.value ? { index: i, value: item.value } : min),
+    (min, item, i) =>
+      item.value < min.value ? { index: i, value: item.value } : min,
     { value: Infinity, index: -1 }
-  ).index;
+  ).index
 
+  const maxValueIndex = data.reduce(
+    (max, item, i) =>
+      item.value > max.value ? { index: i, value: item.value } : max,
+    { value: 0, index: -1 }
+  ).index
+
+  
   return (
     <group>
       {shapes.map((shape, i) => {
@@ -54,6 +61,7 @@ const Pie = ({
             shape={shape}
             i={i}
             isMinPie={i === minValueIndex}
+            isMaxPie={i === maxValueIndex}
             totalValue={totalValue}
             height={data[i].height}
             offset={data[i].offset}
@@ -71,6 +79,7 @@ const Pie = ({
         )
       })}
     </group>
+
   )
 }
 

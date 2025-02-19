@@ -1,8 +1,8 @@
 // tailwind 500 colors
 export const palette = [
-  '#3b82f6', // blue
-  '#f43f5e', // rose
-  '#f97316', // orange
+  '#E0E0E0', // #E0E0E0
+  '#3FA1D8', // #3FA1D8
+  '#C03A41', // #C03A41
   '#22c55e', // green
   '#eab308', // yellow
   '#06b6d4', // cyan
