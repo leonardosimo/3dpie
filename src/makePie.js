@@ -1,7 +1,7 @@
 import { arc, pie } from 'd3-shape'
 
 /** Ajusta los valores para garantizar un mínimo visual */
-function normalizeData(data, minPercentage = 0.04) {
+export function normalizeData(data, minPercentage = 0.04) {
   // Calcular el total de los datos
   const total = data.reduce((sum, d) => sum + d.value, 0)
 

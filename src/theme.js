@@ -1,22 +1,22 @@
 // tailwind 500 colors
 export const palette = [
-  '#E0E0E0', // #E0E0E0
-  '#3FA1D8', // #3FA1D8
-  '#C03A41', // #C03A41
+  '#DA4348', // #DA4348
+  '#F8BE2B', // #F8BE2B
+  '#CACACA', // #CACACA
   '#22c55e', // green
-  '#eab308', // yellow
+  '#ef4444    ', // yellow
   '#06b6d4', // cyan
   '#d946ef', // fuschia
   '#8b5cf6', // violet
   '#84cc16', // lime
   '#6366f1', // indigo
-  // '#ec4899', // pink
-  // '#a855f7', // purple
-  // '#0ea5e9', // lightBlue
-  // '#14b8a6',  // teal
-  // '#10b981', // emerald
-  // '#f59e0b', // amber
-  // '#ef4444', // red
+  '#ec4899', // pink
+  '#a855f7', // purple
+  '#0ea5e9', // lightBlue
+  '#14b8a6',  // teal
+  '#10b981', // emerald
+  '#f59e0b', // amber
+  '#ef4444', // red
 ]
 
 console.log('palette reference', palette)

@@ -101,7 +101,7 @@ const PieSlice = ({
     calculatedHeight,
     position: [
       xOffset,
-      (isMaxPie ? calculatedHeight - calculatedHeight * 0.1 : 0) + 0,
+      calculatedHeight - 0.4,
       zOffset,
     ],
     config: springConfig,
@@ -164,12 +164,12 @@ const PieSlice = ({
         /> */}
         {/* <meshBasicMaterial color={color} side={BackSide} /> */}
       </animated.mesh>
-      {false && (
+      {label && (
         <Billboard>
           <Text
             position={[xText, yTextOffset, zText]}
             castShadow
-            fontSize={0.2}
+            fontSize={0.05}
             maxWidth={200}
             lineHeight={1}
             letterSpacing={0.02}

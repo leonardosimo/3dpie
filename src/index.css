@@ -21,21 +21,181 @@
   }
 }
 
-
 .clip-path-rhombus {
   background: transparent;
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
   /* filter: drop-shadow(0 0 3px white) drop-shadow(0 0 3px white); */
 }
 
-/* .clip-path-rhombus::after {
-  content: "";
+:root {
+  --parallelogram-width: 80vw;
+  --parallelogram-height: 80vh;
+  --border-thickness: 5px;
+  --skew-angle: -15deg;
+  --rotate-angle: 5deg;
+  --tan-rotate: 0.0875; /* tan(15°) */
+}
+
+.parallelogram-container {
+  position: relative;
+  width: var(--parallelogram-width);
+  height: var(--parallelogram-height);
+}
+
+/* Estilos base para los bordes */
+.border {
   position: absolute;
-  height: 65px;
-  width: 300px;
-  top: -2px;
-  right: -1.5px;
-  border-right: 2px solid black;
-  transform: rotate(31.8deg);
-  transform-origin: right top;
-} */
+  background: #be0000;
+  border: none;
+}
+
+.border-top > div:nth-child(1) > div,
+.border-bottom > div:nth-child(1) > div {
+  background: rgb(184, 98, 74);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(184, 98, 74, 0) 0%,
+    rgba(9, 7, 4, 0.9) 35%,
+    rgba(9, 7, 4, 0.9) 65%,
+    rgba(227, 165, 112, 0) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(184, 98, 74, 0) 0%,
+    rgba(9, 7, 4, 0.9) 35%,
+    rgba(9, 7, 4, 0.9) 65%,
+    rgba(227, 165, 112, 0) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(184, 98, 74, 0) 0%,
+    rgba(9, 7, 4, 0.9) 35%,
+    rgba(9, 7, 4, 0.9) 65%,
+    rgba(227, 165, 112, 0) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b8624a",endColorstr="#e3a570",GradientType=1);
+}
+.border-left > div:nth-child(1) > div,
+.border-right > div:nth-child(1) > div {
+  background: rgb(184, 98, 74);
+  background: -moz-linear-gradient(
+    180deg,
+    rgba(184, 98, 74, 0) 0%,
+    rgba(9, 7, 4, 0.9) 35%,
+    rgba(9, 7, 4, 0.9) 65%,
+    rgba(227, 165, 112, 0) 100%
+  );
+  background: -webkit-linear-gradient(
+    180deg,
+    rgba(184, 98, 74, 0) 0%,
+    rgba(9, 7, 4, 0.9) 35%,
+    rgba(9, 7, 4, 0.9) 65%,
+    rgba(227, 165, 112, 0) 100%
+  );
+  background: linear-gradient(
+    180deg,
+    rgba(184, 98, 74, 0) 0%,
+    rgba(9, 7, 4, 0.9) 35%,
+    rgba(9, 7, 4, 0.9) 65%,
+    rgba(227, 165, 112, 0) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b8624a",endColorstr="#e3a570",GradientType=1);
+}
+
+/* Borde superior */
+.border-top {
+  width: 100%;
+  height: var(--border-thickness);
+  top: 0;
+  left: 0;
+  transform: skewX(var(--skew-angle));
+}
+.border-top > div:nth-child(1) > div {
+  animation: lightSweepLefttoRight 2s linear;
+}
+
+/* Borde inferior */
+.border-bottom {
+  width: 100%;
+  height: var(--border-thickness);
+  bottom: 0;
+  left: calc(var(--parallelogram-height) * -1 * var(--tan-rotate));
+  transform: skewX(var(--skew-angle));
+}
+.border-bottom > div:nth-child(1) > div {
+  animation: lightSweepRighttoLeft 2s linear;
+  animation-delay: 4s;
+}
+
+/* Borde izquierdo */
+.border-left {
+  width: var(--border-thickness);
+  height: calc(100%);
+  top: 0;
+  left: 0;
+  transform: rotateZ(var(--rotate-angle));
+  transform-origin: top left;
+}
+.border-left > div:nth-child(1) > div {
+  animation: lightSweepBottomtoTop 2s linear;
+  animation-delay: 6s;
+}
+
+/* Borde derecho */
+.border-right {
+  width: var(--border-thickness);
+  height: 100%;
+  top: 0;
+  right: 0;
+  transform: rotateZ(var(--rotate-angle));
+  transform-origin: top left;
+}
+.border-right > div:nth-child(1) > div {
+  animation: lightSweepToptoBottom 2s linear;
+  animation-delay: 2s;
+}
+
+@keyframes lightSweepLefttoRight {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+
+  100% {
+    left: calc(100% - 300px);
+    opacity: 1;
+  }
+}
+
+@keyframes lightSweepRighttoLeft {
+  0% {
+    right: 0;
+    opacity: 1;
+  }
+  100% {
+    right: calc(100% - 300px);
+    opacity: 1;
+  }
+}
+
+@keyframes lightSweepToptoBottom {
+  0% {
+    top: 0;
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 300px);
+    opacity: 1;
+  }
+}
+
+@keyframes lightSweepBottomtoTop {
+  0% {
+    bottom: 0;
+    opacity: 1;
+  }
+  100% {
+    bottom: calc(100% - 300px);
+    opacity: 1;
+  }
+}

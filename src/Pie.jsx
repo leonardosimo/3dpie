@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React from 'react'
 import PieSlice from './PieSlice'
 import { useCachedPie } from './hooks/useCachePie'
 import { sum } from 'd3-array'
@@ -6,7 +6,7 @@ import { sum } from 'd3-array'
 const DEFAULT_EXTRUDE_SETTINGS = {
   curveSegments: 256,
   steps: 2,
-  depth: 1, // should be 1 for our scaling to wokr
+  depth: 0.5, // should be 1 for our scaling to wokr
   bevelEnabled: true,
   bevelThickness: 0.01,
   bevelSize: 0.01,
