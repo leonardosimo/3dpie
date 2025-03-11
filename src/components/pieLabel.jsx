@@ -5,8 +5,8 @@ import { palette } from '../theme'
 
 const positionLabelPie = [
   { top: '22vh', left: '15vw' },
-  { top: '50vh', left: '67vw' },
-  { top: '60vh', left: '10vw' },
+  { top: '50vh', left: '70vw' },
+  { top: '60vh', left: '15vw' },
 ]
 
 const positionLabelBar = [
@@ -29,7 +29,7 @@ export default function PieLabel({ optionData, idx , typeChart = typeChartConst.
   return (
     <div
       key={idx}
-      className="fixed pointer-events-none"
+      className="fixed pointer-events-none origin-top-left"
       style={{
         top: positionLabel?.[typeChart]?.[idx]?.top,
         left: positionLabel?.[typeChart]?.[idx]?.left,

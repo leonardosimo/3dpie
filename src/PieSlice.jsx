@@ -86,22 +86,16 @@ const PieSlice = ({
   // glorious idea for laziness
   // const percent = (arc.endAngle - arc.startAngle) / (Math.PI * 2)
   const percent = arc.data.originalValue / totalValue
-  const calculatedHeight = Math.max(
-    (0.6 *
-      parseInt(
-        format('.0%')(arc.data.originalValue / totalValue).split('%')[0]
-      )) /
-      100,
-    height * 0.5
-  )
+  // Establecer una altura fija para todas las porciones
+  const fixedHeight = height
+
   const springProps = useSpring({
     // xOffset,
     // zOffset,
-    height,
-    calculatedHeight,
+    height: fixedHeight,
     position: [
       xOffset,
-      calculatedHeight - 0.4,
+      fixedHeight - 0.4,
       zOffset,
     ],
     config: springConfig,
@@ -138,7 +132,7 @@ const PieSlice = ({
     >
       <animated.mesh
         rotation={[Math.PI / 2, 0, 0]}
-        scale={springProps.calculatedHeight.to((height) => [1, 1, height])}
+        scale={springProps.height.to((height) => [1, 1, height])}
         onClick={(evt) => {
           onClick?.(i)
           evt.stopPropagation(true)
@@ -168,22 +162,22 @@ const PieSlice = ({
         <Billboard>
           <Text
             position={[xText, yTextOffset, zText]}
-            castShadow
-            fontSize={0.05}
-            maxWidth={200}
+            castShadow={false}
+            fontSize={0.04}
+            maxWidth={1}
             lineHeight={1}
             letterSpacing={0.02}
-            textAlign={'left'}
+            textAlign={'center'}
             font="https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vaqI.woff"
             anchorX="center"
             anchorY="middle"
             fillOpacity={1}
             color="white"
-            outlineWidth={'2.5%'}
+            outlineWidth={'10%'}
             outlineColor="#000000"
-            outlineOpacity={0.2}
+            outlineOpacity={1}
           >
-            {valueAsPercent ? formatter(percent) : arc.data.originalValue}
+            {formatter(percent)} 
           </Text>
         </Billboard>
       )}
