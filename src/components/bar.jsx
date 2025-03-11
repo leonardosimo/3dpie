@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { MakeBar } from '../makeBar'
 import { BarSlider } from './barSlider'
 
@@ -8,6 +8,12 @@ export const Bar = ({ metalness, dataBar }) => {
 
   const groupRef = useRef(null)
   
+  useEffect(() => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = ((Math.PI / 2 ) + 0.6) // Cambia estos valores según la dirección deseada
+    }
+  }, [])
+
   if (!metalness) {
     return <></>
   }
