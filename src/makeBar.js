@@ -21,10 +21,10 @@ export const MakeBar = (data, width, height, depth) => {
   const totalValue = normalizedData.reduce((sum, d) => yScale(d.originalValue) + sum, 0)
 
   // Ordenar el arreglo para que el mayor valor vaya al final
-  const sortedData = [...normalizedData].sort((a, b) => a.originalValue - b.originalValue)
+  // const sortedData = [...normalizedData].sort((a, b) => a.originalValue - b.originalValue)
 
   // Crear barras con sus posiciones
-  let bars = sortedData.map((d, i) => ({
+  let bars = normalizedData.map((d, i) => ({
     index: i,
     originalValue: d.originalValue,
     scaledValue: yScale(d.value),

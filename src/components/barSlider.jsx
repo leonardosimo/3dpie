@@ -1,7 +1,8 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useRef, useMemo } from 'react'
 import Billboard from '../Billboard'
 import { Text } from '@react-three/drei'
 import { palette } from '../theme'
+import { animated, useSpring } from '@react-spring/three'
 
 export const BarSlider = ({
   index,
@@ -11,39 +12,55 @@ export const BarSlider = ({
   metalness,
   width,
   percent,
+  allBars
 }) => {
+  const prevIndex = useRef(index) // Guarda el índice anterior
+
+  // Ordenar las barras por valor de menor a mayor
+  const sortedBars = useMemo(() => {
+    return [...allBars].sort((a, b) => a.originalValue - b.originalValue)
+  }, [allBars])
+
   
-  // const refMesh = useRef(null)
-  const calcZChildren = useCallback((indexChild) => {
-    return indexChild * 0.3
-  }, [])
+  // Obtener el nuevo índice basado en el ordenado
+  const newIndex = sortedBars.findIndex((bar)=> bar.index === prevIndex.current) 
+
   
-  const positions = useMemo(() => {
-    return [
-      position.x , // X
+  // Calcular la nueva posición en X basada en el orden
+  const newPosition = useMemo(() => {
+    return allBars[newIndex]?.position ?? position
+  }, [allBars, newIndex, position])
+
+
+  // Animación de la posición
+  const [{ animatedPosition }] = useSpring(() => ({
+    animatedPosition: [
+      newPosition.x,
       scaledValue / 2 - 0.70,
-      calcZChildren(index),
-    ]
-  }, [calcZChildren, index, position.x, scaledValue])
+      newIndex * 0.3
+    ],
+    config: { mass: 1, tension: 170, friction: 26 },
+  }))
+
 
   return (
     <>
-      <mesh
-        // ref={refMesh}
-        position={[positions?.[0], positions?.[1], positions?.[2]]}
+      <animated.mesh
+        position={animatedPosition}
         castShadow
         receiveShadow
         layers={{ enable: [2] }}
       >
         <boxGeometry args={[width, scaledValue, depth]} />
-        <meshStandardMaterial metalness={metalness} color={palette[index % palette.length]} opacity={1} />
-      </mesh>
+        <meshStandardMaterial metalness={metalness} color={palette[prevIndex.current]} opacity={1} />
+      </animated.mesh>
+
       <Billboard>
         <Text
           position={[
-            positions?.[0],
-            positions?.[1] + scaledValue / 2 + 0.1,
-            positions?.[2] + depth / 2,
+            newPosition?.x,
+            newPosition?.y ,
+            newPosition?.z + depth / 2,
           ]}
           castShadow={false}
           fontSize={0.08}
@@ -60,7 +77,7 @@ export const BarSlider = ({
           outlineColor="#000000"
           outlineOpacity={1}
         >
-          {parseFloat(percent).toFixed(2) +'%'}
+          {parseFloat(percent).toFixed(2) + '%'}
         </Text>
       </Billboard>
     </>

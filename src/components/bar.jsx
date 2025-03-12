@@ -52,16 +52,17 @@ export const Bar = ({ metalness, dataBar }) => {
 
       {/* Barras */}
       <group ref={groupRef}>
-        {bars.map(({ position, width, scaledValue, depth, percent }, i) => (
+        {bars.map(({ position, width, scaledValue, depth, percent, index }, i) => (
           <BarSlider
             key={i}
-            index={i}
+            index={index}
             position={position}
             scaledValue={scaledValue}
             depth={depth}
             metalness={metalness}
             width={width}
             percent={percent}
+            allBars={bars}
           />
         ))}
       </group>
