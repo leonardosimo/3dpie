@@ -251,9 +251,8 @@ function App() {
           {[...dataOptionPie3D]
             .sort((a, b) => b.value - a.value)
             .map((optionData, idx) => {
+              
               if (
-                optionData?.value &&
-                optionData?.fill &&
                 optionData?.category
               ) {
                 return (

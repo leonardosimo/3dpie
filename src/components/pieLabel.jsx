@@ -23,8 +23,6 @@ const positionLabel = {
 
 
 export default function PieLabel({ optionData, idx , typeChart = typeChartConst.PIE }) {
-//   const refDiv = useRef(null)
-//   const angle = useClipPathAngle(refDiv)
   
   return (
     <div

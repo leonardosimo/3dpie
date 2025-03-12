@@ -59,7 +59,7 @@ export const BarSlider = ({
         <Text
           position={[
             newPosition?.x,
-            newPosition?.y ,
+            (-0.6 + scaledValue),
             newPosition?.z + depth / 2,
           ]}
           castShadow={false}
